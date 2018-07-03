@@ -75,7 +75,7 @@ Confirm action, press [Y]es or [N]o:
             }
     }until ($confirm -match $regex)
             
-            if($Confirm -eq 'Y') {
+    if($Confirm -eq 'Y') {
     
         # Public IP 
         $PublicIP_Params = @{
@@ -85,12 +85,18 @@ Confirm action, press [Y]es or [N]o:
             'IdletimeoutInMinutes'= 4
             'Name' = $IPPUB
         }
-            if($NewResourceGroup -eq 'yes'){
-                New-AzureRmResourceGroup -Name $ResourceGroupName -Location $location
-            }    
+            $pip = New-AzureRmPublicIpAddress @PublicIP_Params
+                    
+    # New resource group
+    
+    if($NewResourceGroup -eq 'yes'){
+        $NewRSG_Params = @{
+            'Name' = $ResourceGroupName
+            'Location' = $location
+        }
+            New-AzureRmResourceGroup @NewRSG_Params
+    }    
             
-        $pip = New-AzureRmPublicIpAddress @PublicIP_Params
-        
     # NEW_Vnet
     if($New_VNET -eq 'yes'){    
         $SubNet_Address = read-host "Subnet address" 
@@ -99,7 +105,7 @@ Confirm action, press [Y]es or [N]o:
             'Name' = $SubNet_Name
             'AddressPrefix' = $SubNet_Address
         }
-            $subnet = New-AzureRmVirtualNetworkSubnetConfig -Name $SubnetName -AddressPrefix $SubNet_Address
+            $subnet = New-AzureRmVirtualNetworkSubnetConfig @Subnet_Params
             
         $VNET_Params = @{
             'Name' = $VnetName
