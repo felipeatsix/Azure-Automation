@@ -19,8 +19,9 @@ function New-AzureVaultBKP {
         'Location' = $Location
     }
 
-    do{    
-        $VaultParam    
+    $VaultParam | ft
+
+    do{     
         $confirm = Read-Host "Confirm configuration [Y]es or [N]o?"
          if($confirm -notmatch $regex){
              Write-Warning "Invalid option, please hit the keys 'Y' or 'N'"
