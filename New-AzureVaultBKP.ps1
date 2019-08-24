@@ -11,7 +11,7 @@ function New-AzureVaultBKP {
     #Login-AzureRmAccount
     #Register-AzureRmResourceProvider -ProviderNamespace "Microsoft.RecoveryServices"
 
-    $regex = '[yn]'
+    $regex = "Y|N"
 
     $VaultParam = @{
         'Name' = $Name
@@ -23,7 +23,7 @@ function New-AzureVaultBKP {
 
     do{     
         $confirm = Read-Host "Confirm configuration [Y]es or [N]o?"
-         if($confirm -notmatch $regex){
+         if($regex -notmatch $confirm){
              Write-Warning "Invalid option, please hit the keys 'Y' or 'N'"
           }
     }Until($confirm -match 'Y')
