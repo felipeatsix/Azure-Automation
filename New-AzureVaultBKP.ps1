@@ -19,14 +19,14 @@ function New-AzureVaultBKP {
         'Location' = $Location
     }
 
-    $VaultParam | ft
+    $VaultParam | Format-Table
 
-    do{     
+    Do {     
+        
         $confirm = Read-Host "Confirm configuration [Y]es or [N]o?"
-         if($regex -notmatch $confirm){
-             Write-Warning "Invalid option, please hit the keys 'Y' or 'N'"
-          }
-    }Until($confirm -match 'Y')
+        If($regex -notmatch $confirm) { Write-Warning "Invalid option, please hit the keys 'Y' or 'N'" }
+
+    } Until($confirm -match 'Y')
 
         New-AzureRmRecoveryServicesVault @VaultParam
 
@@ -37,9 +37,10 @@ function New-AzureVaultBKP {
 
     #Create azure folder and download vault settings file
 
-    if(!(Test-Path "$env:SystemDrive\Azure_VaultSettings")){
-        set-location $env:SystemDrive\
-        mkdir Azure_VaultSettings
+    If (!(Test-Path "$env:SystemDrive\Azure_VaultSettings")) {
+        
+        Set-Location $env:SystemDrive\
+        Mkdir Azure_VaultSettings
     }
         $Path = "$env:SystemDrive\Azure_VaultSettings"
 
