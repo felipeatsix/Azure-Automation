@@ -8,15 +8,19 @@
 # Register-AzureRmResourceProvider -ProviderNamespace 'Microsoft.Compute'
 # Register-AzureRmResourceProvider -ProviderNamespace 'Microsoft.Storage'
 
+enum YesNo 
+{
+    Yes
+    No
+}
+
 function NEW-AZUREVM {
     [Cmdletbinding()]
         param (
-            [Parameter(Mandatory,HelpMessage='Select yes or no for creating a new resource group')]
-            [ValidateSet('yes','no')]
-            $NewResourceGroup,
+            [Parameter(Mandatory,HelpMessage='Select yes or no for creating a new resource group')]            
+            [YesNo]$NewResourceGroup,
             [Parameter(Mandatory,HelpMessage='Select yes or no for creating a new VNET')]
-            [ValidateSet('yes','no')]
-            $New_VNET,
+            [YesNo]$New_VNET,
             [Parameter(Mandatory)]
             $SubnetName,
             [Parameter(Mandatory)]
@@ -65,12 +69,12 @@ function NEW-AZUREVM {
         'User' = $user
     }
 
-    Write-Host "New VM configuration:`n" -ForegroundColor Cyan
+    Write-Host "`nNew VM configuration:" -ForegroundColor Cyan
     Write-Output $VMConfig    
             
     Do {        
         
-        $Confirm = Read-Host "Confirm action, press [Y]es or [N]o:"        
+        $Confirm = Read-Host "Confirm action, press [Y]es or [N]o"        
         if($Confirm -notmatch $regex) { Write-Warning "Invalid option, please choose Y or N" }
     
     } Until($confirm -match $regex)            
